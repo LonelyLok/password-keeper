@@ -7,3 +7,19 @@ services:
       - ./data/db:/data/db
     ports:
       - 27017:27017
+
+  mongodb-init:
+    build: ./init
+    depends_on:
+      - mongodb
+    links:
+      - mongodb
+
+  django:
+    build: ./backend
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongodb-init
+    links:
+      - mongodb
